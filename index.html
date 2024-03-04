@@ -29,7 +29,7 @@
     <h1 style="text-align:center">Profile Registration</h1>
     <h2 style="text-align:center">North Carolina State University</h2>
 
-    <form id="myForm" action="https://script.google.com/macros/s/AKfycbz-NYkHkIvr6Kb9N7jW3cJabhg7erPBjeWvIgDcZr6Ka1W4BlSEjzDxVcd1uqTMwcFj/exec">
+    <form id="myForm" action="https://script.google.com/macros/s/AKfycby6XPOxWjEpspnImM_QMfnlYADYG87OxXIU14chDG0eU_S5AkKVG5CQLcMzOZp4mlMO7A/exec">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
             <label for="firstname">First Name:</label><br>
@@ -44,24 +44,26 @@
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
             <label for="file">Upload File:</label><br>
             <input type="file" id="file" name="file" required><br><br>
-            <button type="button" class="pure-button pure-button-primary">Confirm</button>
+            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
 
     <script>
-        var password = document.getElementById("password"),
-            confirmpassword = document.getElementById("confirmpassword");
+        document.addEventListener("DOMContentLoaded", function() {
+            var password = document.getElementById("password");
+            var confirmpassword = document.getElementById("confirmpassword");
 
-        function validatePassword(){
-            if(password.value != confirmpassword.value){
-                confirmpassword.setCustomValidity("Passwords Don't Match");
-            } else {
-                confirmpassword.setCustomValidity('');
+            function validatePassword() {
+                if (password.value != confirmpassword.value) {
+                    confirmpassword.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirmpassword.setCustomValidity('');
+                }
             }
-        }
 
-        password.onchange = validatePassword;
-        confirmpassword.onkeyup = validatePassword;
+            password.onchange = validatePassword;
+            confirmpassword.onkeyup = validatePassword;
+        });
     </script>
 </body>
 </html>
