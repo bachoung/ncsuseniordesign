@@ -49,45 +49,21 @@
     </form>
 
     <script>
-        function submitForm() {
-    var firstname = document.getElementById("firstname").value;
-    var lastname = document.getElementById("lastname").value;
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-    var confirmpassword = document.getElementById("confirmpassword").value;
-    var file = document.getElementById("file").value;
+        document.addEventListener("DOMContentLoaded", function() {
+            var password = document.getElementById("password");
+            var confirmpassword = document.getElementById("confirmpassword");
 
-    // Create formData object
-    var formData = {
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        password: password,
-        confirmpassword: confirmpassword,
-        file: file  // Note: File uploads cannot be sent via JSON.stringify, adjust as necessary
-    };
+            function validatePassword() {
+                if (password.value != confirmpassword.value) {
+                    confirmpassword.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirmpassword.setCustomValidity('');
+                }
+            }
 
-    // Log formData before serialization
-    console.log(formData);
-
-    // Serialize form data into JSON format
-    var jsonData = JSON.stringify(formData);
-
-    // Send JSON data to Lambda function (using fetch or XMLHttpRequest)
-    fetch('https://your-lambda-endpoint-url', {
-        method: 'POST',
-        body: jsonData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // Log success message
-        // Optionally, you can redirect the user or show a success message here
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle errors here
-    });
-}
+            password.onchange = validatePassword;
+            confirmpassword.onkeyup = validatePassword;
+        });
     </script>
 </body>
 </html>
