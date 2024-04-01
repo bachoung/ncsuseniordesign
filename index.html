@@ -1,30 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test Lambda Function</title>
+    <title>Profile Registration</title>
+    <style>
+        body {
+            background-color: #ffd4d4;
+        }
+
+        fieldset {
+            background-color: #e6e6e6;
+            width: 300px;
+            height: 500px;
+            margin: auto;
+        }
+
+        legend {
+            background-color: #c9c9c9;
+            color: black;
+            padding: 6px 12px;
+        }
+
+        input {
+            margin: 2px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Test Lambda Function with POST Request</h1>
-    <form action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite" method="post" enctype="multipart/form-data">
-        <label for="firstname">First Name:</label>
-        <input type="text" id="firstname" name="firstname" value="Brandon"><br><br>
+    <h1 style="text-align:center">Profile Registration</h1>
+    <h2 style="text-align:center">North Carolina State University</h2>
 
-        <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" name="lastname" value="Choung"><br><br>
-
-        <label for="phonenumber">Phone Number:</label>
-        <input type="text" id="phonenumber" name="phonenumber" value="6143024397"><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" value="123"><br><br>
-
-        <label for="confirmpassword">Confirm Password:</label>
-        <input type="password" id="confirmpassword" name="confirmpassword" value="123"><br><br>
-
-        <label for="file">File:</label>
-        <input type="file" id="file" name="file"><br><br>
-
-        <input type="submit" value="Submit">
+    <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite">
+        <fieldset style="text-align:center;">
+            <legend>Create a Profile</legend><br>
+            <label for="firstname">First Name:</label><br>
+            <input type="text" id="firstname" name="firstname" required><br><br>
+            <label for="lastname">Last Name:</label><br>
+            <input type="text" id="lastname" name="lastname" required><br><br>
+            <label for="phonenumber">Phone Number:</label><br>
+            <input type="text" id="phonenumber" name="phonenumber" required><br><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <label for="confirmpassword">Confirm Password:</label><br>
+            <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
+            <label for="file">Upload File:</label><br>
+            <input type="file" id="file" name="file" required><br><br>
+            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
+        </fieldset>
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var password = document.getElementById("password");
+            var confirmpassword = document.getElementById("confirmpassword");
+
+            function validatePassword() {
+                if (password.value != confirmpassword.value) {
+                    confirmpassword.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirmpassword.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirmpassword.onkeyup = validatePassword;
+        });
+    </script>
 </body>
 </html>
