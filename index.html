@@ -54,29 +54,17 @@
         form.addEventListener('submit', handleSubmit);
         
         function handleSubmit(event) {
-        /** @type {HTMLFormElement} */
-        const form = event.currentTarget;
-        const url = new URL(form.action);
-        const formData = new FormData(form);
-        const searchParams = new URLSearchParams(formData);
+            const url = new URL(form.action);
+            const formData = new FormData(form);
         
-        /** @type {Parameters<fetch>[1]} */
-        const fetchOptions = {
-        method: form.method,
+            /** @type {Parameters<fetch>[1]} */
+            const fetchOptions = {
+            method: form.method,
+            body: formData,
             };
-        
-        if (form.method.toLowerCase() === 'post') {
-        if (form.enctype === 'multipart/form-data') {
-        fetchOptions.body = formData;
-            } else {
-        fetchOptions.body = searchParams;
-        }
-            } else {
-                url.search = searchParams;
+            fetch(url, fetchOptions);
+            event.preventDefault();
             }
-        fetch(url, fetchOptions);
-        event.preventDefault();
-        }
         
         document.addEventListener("DOMContentLoaded", function() {
             var password = document.getElementById("password");
