@@ -29,7 +29,7 @@
     <h1 style="text-align:center">Profile Registration</h1>
     <h2 style="text-align:center">North Carolina State University</h2>
 
-    <form id="myForm">
+    <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
             <label for="firstname">First Name:</label><br>
@@ -43,34 +43,26 @@
             <label for="confirmpassword">Confirm Password:</label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
             <label for="file">Upload File:</label><br>
-            <input type="file" id="fileInput" required><br><br>
-            <button type="button" id="submitButton" class="pure-button pure-button-primary">Confirm</button>
+            <input type="file" id="file" name="file" required><br><br>
+            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var submitButton = document.getElementById("submitButton");
-            submitButton.addEventListener("click", function() {
-                var form = document.getElementById("myForm");
-                var formData = new FormData(form);
-                var fileInput = document.getElementById("fileInput").files[0];
-                formData.append("file", fileInput);
+            var password = document.getElementById("password");
+            var confirmpassword = document.getElementById("confirmpassword");
 
-                fetch("https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    // Handle response from Lambda function as needed
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    // Handle error
-                });
-            });
+            function validatePassword() {
+                if (password.value != confirmpassword.value) {
+                    confirmpassword.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirmpassword.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirmpassword.onkeyup = validatePassword;
         });
     </script>
 </body>
