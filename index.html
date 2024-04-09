@@ -64,31 +64,6 @@
             password.onchange = validatePassword;
             confirmpassword.onkeyup = validatePassword;
         });
-
-        document.getElementById('myForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-    
-    var formData = new FormData(document.getElementById('myForm'));
-    var fileInput = document.getElementById('file');
-    
-    // Read the file content
-    var reader = new FileReader();
-    reader.readAsDataURL(fileInput.files[0]);
-    reader.onload = function() {
-        // Append the file content to the form data
-        formData.append('file_content', reader.result);
-        
-        // Send the form data to the Lambda function
-        fetch('https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    };
-    });
-
     </script>
 </body>
 </html>
