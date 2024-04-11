@@ -6,7 +6,7 @@
         body {
             background-color: #ffd4d4;
         }
-
+        
         fieldset {
             background-color: #e6e6e6;
             width: 300px;
@@ -28,7 +28,8 @@
 <body>
     <h1 style="text-align:center">Profile Registration</h1>
     <h2 style="text-align:center">North Carolina State University</h2>
-
+<!--Code for the user input-->
+<!--Action ID needs to match your Invoke URL of your API Gateway-->
     <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite" enctype="multipart/form-data">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
@@ -48,6 +49,8 @@
         </fieldset>
     </form>
 
+    <!--Script to check if password matches confirm password-->
+    <!--Coded in javascript-->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var password = document.getElementById("password");
@@ -60,7 +63,6 @@
                     confirmpassword.setCustomValidity('');
                 }
             }
-
             password.onchange = validatePassword;
             confirmpassword.onkeyup = validatePassword;
         });
