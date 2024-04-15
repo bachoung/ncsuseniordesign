@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Profile Registration</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <style>
         body {
             background-color: #ffd4d4;
@@ -55,24 +56,24 @@
     <!--Coded in javascript-->
     <script>
         const ENDPOINT_URL = "https://s3.pilw.io"
-const ACCESS_KEY_ID = "ENTER ACCESS KEY ID HERE"
-const ACCESS_KEY_SECRET = "ENTER ACCESS KEY SECRET"
-const BUCKET_NAME = "ENTER BUCKET NAME HERE"
+        const ACCESS_KEY_ID = "ENTER ACCESS KEY ID HERE"
+        const ACCESS_KEY_SECRET = "ENTER ACCESS KEY SECRET"
+        const BUCKET_NAME = "ENTER BUCKET NAME HERE"
  
-var bucket = new AWS.S3({
-    accessKeyId: ACCESS_KEY_ID,
-    secretAccessKey: ACCESS_KEY_SECRET,
-    endpoint: new AWS.Endpoint(ENDPOINT_URL),
-    params: {
+        var bucket = new AWS.S3({
+        accessKeyId: ACCESS_KEY_ID,
+        secretAccessKey: ACCESS_KEY_SECRET,
+        endpoint: new AWS.Endpoint(ENDPOINT_URL),
+        params: {
         Bucket: BUCKET_NAME
-    }
-})
+        }
+    })
  
-var fileChooser = document.getElementById('file-chooser')
-var button = document.getElementById('upload-button')
-var results = document.getElementById('results')
+    var fileChooser = document.getElementById('file-chooser')
+    var button = document.getElementById('upload-button')
+    var results = document.getElementById('results')
  
-button.addEventListener('click', function() {
+    button.addEventListener('click', function() {
     var file = fileChooser.files[0]
     results.innerHTML = ''
     if (!file) {
@@ -92,11 +93,11 @@ button.addEventListener('click', function() {
          }
          listObjs()
     })
-}, false)
+    }, false)
  
-function listObjs() {
-    bucket.listObjects({Prefix: 'demo'}, function(err, data) {
-        if (err) {
+    function listObjs() {
+        bucket.listObjects({Prefix: 'demo'}, function(err, data) {
+            if (err) {
             results.innerHTML = 'ERROR: ' + err;
             return
         }
@@ -105,14 +106,14 @@ function listObjs() {
             objKeys += obj.Key + "<br>"
         });
         results.innerHTML = objKeys
-    })
-}
-        document.addEventListener("DOMContentLoaded", function() {
-            var password = document.getElementById("password");
-            var confirmpassword = document.getElementById("confirmpassword");
+        })
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        var password = document.getElementById("password");
+        var confirmpassword = document.getElementById("confirmpassword");
 
-            function validatePassword() {
-                if (password.value != confirmpassword.value) {
+        function validatePassword() {
+            if (password.value != confirmpassword.value) {
                     confirmpassword.setCustomValidity("Passwords Don't Match");
                 } else {
                     confirmpassword.setCustomValidity('');
