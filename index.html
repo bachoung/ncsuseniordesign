@@ -43,15 +43,70 @@
             <input type="password" id="password" name="password" required><br><br>
             <label for="confirmpassword">Confirm Password:</label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
-            <label for="file">Upload Headshot Image:</label><br>
-            <input type="file" id="file" name="file" required><br><br>
             <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
 
+    <input type="file" id="file-chooser" />
+    <button id="upload-button">Upload to S3</button>
+    <div id="results"></div>
+    
     <!--Script to check if password matches confirm password-->
     <!--Coded in javascript-->
     <script>
+        const ENDPOINT_URL = "https://s3.pilw.io"
+const ACCESS_KEY_ID = "ENTER ACCESS KEY ID HERE"
+const ACCESS_KEY_SECRET = "ENTER ACCESS KEY SECRET"
+const BUCKET_NAME = "ENTER BUCKET NAME HERE"
+ 
+var bucket = new AWS.S3({
+    accessKeyId: ACCESS_KEY_ID,
+    secretAccessKey: ACCESS_KEY_SECRET,
+    endpoint: new AWS.Endpoint(ENDPOINT_URL),
+    params: {
+        Bucket: BUCKET_NAME
+    }
+})
+ 
+var fileChooser = document.getElementById('file-chooser')
+var button = document.getElementById('upload-button')
+var results = document.getElementById('results')
+ 
+button.addEventListener('click', function() {
+    var file = fileChooser.files[0]
+    results.innerHTML = ''
+    if (!file) {
+        results.innerHTML = 'Nothing to upload.'
+        return
+    }
+    var params = {
+        Key: 'demo/' + file.name,
+        ContentType: file.type,
+        Body: file,
+        ACL: 'public-read'
+    }
+    bucket.putObject(params, function(err, data) {
+        if (err) {
+            results.innerHTML = 'ERROR: ' + err;
+            return
+         }
+         listObjs()
+    })
+}, false)
+ 
+function listObjs() {
+    bucket.listObjects({Prefix: 'demo'}, function(err, data) {
+        if (err) {
+            results.innerHTML = 'ERROR: ' + err;
+            return
+        }
+        var objKeys = "";
+        data.Contents.forEach(function(obj) {
+            objKeys += obj.Key + "<br>"
+        });
+        results.innerHTML = objKeys
+    })
+}
         document.addEventListener("DOMContentLoaded", function() {
             var password = document.getElementById("password");
             var confirmpassword = document.getElementById("confirmpassword");
