@@ -36,8 +36,8 @@
             <input type="text" id="firstname" name="firstname" required><br><br>
             <label for="lastname">Last Name:</label><br>
             <input type="text" id="lastname" name="lastname" required><br><br>
-            <label for="phone number">Phone Number:</label><br>
-            <input type="text" id="phone number" name="phone number" required><br><br>
+            <label for="phonenumber">Phone Number:</label><br>
+            <input type="text" id="phonenumber" name="phonenumber" required><br><br>
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br><br>
             <label for="confirmpassword">Confirm Password:</label><br>
@@ -68,13 +68,13 @@
             e.preventDefault();
             var firstname = document.getElementById("firstname").value;
             var lastname = document.getElementById("lastname").value;
-            var email = document.getElementById("email").value;
+            var phonenumber = document.getElementById("phonenumber").value;
             var password = document.getElementById("password").value;
 
             google.script.run.processForm({
                 firstname: firstname,
                 lastname: lastname,
-                email: email,
+                phonenumber: phonenumber,
                 password: password,
             });
 
