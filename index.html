@@ -79,38 +79,26 @@
                 // Access the selected file
                 const file = event.target.files[0];
 
-                // Create FormData object
+                // Get form data
                 const formData = new FormData();
-                formData.append("file", file);
+                formData.append('file', file);
 
-                // Construct HTTP request
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite", true);
-
-                // Send FormData object as the request body
-                xhr.send(formData);
-
-                // Optional: Handle upload progress
-                xhr.upload.onprogress = function(event) {
-                    const percentComplete = (event.loaded / event.total) * 100;
-                    console.log("Upload Progress:", percentComplete.toFixed(2) + "%");
-                };
-
-                // Handle upload completion
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        console.log("File uploaded successfully!");
-                        // Optionally, handle response from the server
-                        console.log("Server Response:", xhr.responseText);
-                    } else {
-                        console.error("Upload failed. Server returned status:", xhr.status);
+                // Send form data to Lambda function
+                fetch('https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response:', data);
+                    if (data.presigned_url) {
+                        // Redirect to the presigned URL for file upload
+                        window.location.href = data.presigned_url;
                     }
-                };
-
-                // Handle errors
-                xhr.onerror = function() {
-                    console.error("Upload failed. Network error occurred.");
-                };
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             });
         });
     </script>
