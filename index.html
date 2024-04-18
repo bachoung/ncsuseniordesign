@@ -44,7 +44,7 @@
             <input type="password" id="password" name="password" required><br><br>
             <label for="confirmpassword">Confirm Password:</label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
-            <!-- File upload button -->
+            <!-- File upload -->
             <input type="file" id="fileInput" style="display: none;">
             <button type="button" id="selectFileButton">Select file...</button><br><br>
             <button type="submit" class="pure-button pure-button-primary">Confirm</button>
@@ -54,53 +54,57 @@
     <!-- Scripts -->
     <!-- Coded in JavaScript -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var password = document.getElementById("password");
-            var confirmpassword = document.getElementById("confirmpassword");
+       document.addEventListener("DOMContentLoaded", function() {
+    var password = document.getElementById("password");
+    var confirmpassword = document.getElementById("confirmpassword");
 
-            function validatePassword() {
-                if (password.value != confirmpassword.value) {
-                    confirmpassword.setCustomValidity("Passwords Don't Match");
-                } else {
-                    confirmpassword.setCustomValidity('');
-                }
+    function validatePassword() {
+        if (password.value != confirmpassword.value) {
+            confirmpassword.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirmpassword.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirmpassword.onkeyup = validatePassword;
+
+    // Add event listener to the form submission
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Access the selected file
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+
+        // Get form data
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Send form data to Lambda function
+        fetch('https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response:', data);
+            if (data.presigned_url) {
+                // Redirect to the presigned URL for file upload
+                window.location.href = data.presigned_url;
             }
-
-            password.onchange = validatePassword;
-            confirmpassword.onkeyup = validatePassword;
-
-            // Add event listener to the select file button
-            document.getElementById("selectFileButton").addEventListener("click", function() {
-                document.getElementById("fileInput").click();
-            });
-
-            // Add event listener to the file input
-            document.getElementById("fileInput").addEventListener("change", function(event) {
-                // Access the selected file
-                const file = event.target.files[0];
-
-                // Get form data
-                const formData = new FormData();
-                formData.append('file', file);
-
-                // Send form data to Lambda function
-                fetch('https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Response:', data);
-                    if (data.presigned_url) {
-                        // Redirect to the presigned URL for file upload
-                        window.location.href = data.presigned_url;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
+    });
+
+    // Optional: Add event listener to the select file button
+    document.getElementById("selectFileButton").addEventListener("click", function() {
+        document.getElementById("fileInput").click();
+    });
+});
+
     </script>
 </body>
 </html>
