@@ -48,67 +48,9 @@
         </fieldset>
     </form>
 
-    <!--Code for File input-->
-    <input type="file" id="file-chooser" />
-    <button id="upload-button">Upload to S3</button>
-    <div id="results"></div>
-    
-    <!--Script to check if password matches confirm password-->
+    <!--Scripts-->
     <!--Coded in javascript-->
     <script>
-        const ENDPOINT_URL = "https://s3.pilw.io"
-        const ACCESS_KEY_ID = "AKIA2NZBSOC4JAUOG75X"
-        const ACCESS_KEY_SECRET = "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"
-        const BUCKET_NAME = "security-fileupload"
- 
-        var bucket = new AWS.S3({
-        accessKeyId: ACCESS_KEY_ID,
-        secretAccessKey: ACCESS_KEY_SECRET,
-        endpoint: new AWS.Endpoint(ENDPOINT_URL),
-        params: {
-        Bucket: BUCKET_NAME
-        }
-    })
- 
-    var fileChooser = document.getElementById('file-chooser')
-    var button = document.getElementById('upload-button')
-    var results = document.getElementById('results')
- 
-    button.addEventListener('click', function() {
-    var file = fileChooser.files[0]
-    results.innerHTML = ''
-    if (!file) {
-        results.innerHTML = 'Nothing to upload.'
-        return
-    }
-    var params = {
-        Key: 'demo/' + file.name,
-        ContentType: file.type,
-        Body: file,
-        ACL: 'public-read'
-    }
-    bucket.putObject(params, function(err, data) {
-        if (err) {
-            results.innerHTML = 'ERROR: ' + err;
-            return
-         }
-         listObjs()
-    })
-    }, false)
- 
-    function listObjs() {
-        bucket.listObjects({Prefix: 'demo'}, function(err, data) {
-            if (err) {
-            results.innerHTML = 'ERROR: ' + err;
-            return
-        }
-        var objKeys = "";
-        data.Contents.forEach(function(obj) {
-            objKeys += obj.Key + "<br>"
-        });
-        results.innerHTML = objKeys
-        })
-    }
     document.addEventListener("DOMContentLoaded", function() {
         var password = document.getElementById("password");
         var confirmpassword = document.getElementById("confirmpassword");
