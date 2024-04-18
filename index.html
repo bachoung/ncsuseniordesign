@@ -6,11 +6,11 @@
         body {
             background-color: #ffd4d4;
         }
-        
+
         fieldset {
             background-color: #e6e6e6;
             width: 300px;
-            height: 500px;
+            height: 550px;
             margin: auto;
         }
 
@@ -28,83 +28,58 @@
 <body>
     <h1 style="text-align:center">Profile Registration</h1>
     <h2 style="text-align:center">North Carolina State University</h2>
-    <!-- Code for the user input -->
-    <!-- Action ID needs to match your Invoke URL of your API Gateway -->
-    <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite" enctype="multipart/form-data">
+
+    <form id="myForm" action="https://script.google.com/macros/s/AKfycbwqsqKsrDXA8BX5dys00fksYWnT4o4sxuwo92PzWzHPswp8h1ApwcOwjk5iQFsphEDG/exec">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
             <label for="firstname">First Name:</label><br>
             <input type="text" id="firstname" name="firstname" required><br><br>
             <label for="lastname">Last Name:</label><br>
             <input type="text" id="lastname" name="lastname" required><br><br>
-            <label for="phonenumber">Phone Number:</label><br>
-            <input type="text" id="phonenumber" name="phonenumber" required><br><br>
+            <label for="phone number">Phone Number:</label><br>
+            <input type="text" id="phone number" name="phone number" required><br><br>
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br><br>
             <label for="confirmpassword">Confirm Password:</label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
-            <!-- File upload -->
-            <input type="file" id="fileInput" style="display: none;">
-            <button type="button" id="selectFileButton">Select file...</button><br><br>
-            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
+            <button type="button" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
 
-    <!-- Scripts -->
-    <!-- Coded in JavaScript -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Script for checking if passwords match
-            var password = document.getElementById("password");
-            var confirmpassword = document.getElementById("confirmpassword");
+        var password = document.getElementById("password"),
+            confirmpassword = document.getElementById("confirmpassword");
 
-            function validatePassword() {
-                if (password.value != confirmpassword.value) {
-                    confirmpassword.setCustomValidity("Passwords Don't Match");
-                } else {
-                    confirmpassword.setCustomValidity('');
-                }
+        function validatePassword(){
+            if(password.value != confirmpassword.value){
+                confirmpassword.setCustomValidity("Passwords Don't Match");
+            } else {
+                confirmpassword.setCustomValidity('');
             }
-            password.onchange = validatePassword;
-            confirmpassword.onkeyup = validatePassword;
+        }
 
-            // Script for file input
-            // Add event listener to the select file button
-            document.getElementById("selectFileButton").addEventListener("click", function() {
-                document.getElementById("fileInput").click();
+        password.onchange = validatePassword;
+        confirmpassword.onkeyup = validatePassword;
+
+        var form = document.getElementById("myForm");
+        var button = form.querySelector("button");
+
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+            var firstname = document.getElementById("firstname").value;
+            var lastname = document.getElementById("lastname").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            google.script.run.processForm({
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                password: password,
             });
 
-            // Add event listener to the file input
-            document.getElementById("fileInput").addEventListener("change", function(event) {
-                // Access the selected file
-                const file = event.target.files[0];
-
-                // Get form data
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('firstname', document.getElementById('firstname').value);
-                formData.append('lastname', document.getElementById('lastname').value);
-                formData.append('phonenumber', document.getElementById('phonenumber').value);
-                formData.append('password', document.getElementById('password').value);
-                formData.append('confirmpassword', document.getElementById('confirmpassword').value);
-
-                // Send form data to Lambda function
-                fetch('https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Response:', data);
-                    if (data.presigned_url) {
-                        // Redirect to the presigned URL for file upload
-                        window.location.href = data.presigned_url;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
+            alert("Registration submitted successfully!");
+            form.reset();
         });
     </script>
 </body>
