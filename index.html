@@ -46,17 +46,15 @@
             <!-- File upload -->
             <input type="file" id="fileInput" style="display: none;">
             <button type="button" id="selectFileButton">Select file...</button><br><br>
-            <button type="button" id="uploadButton" class="pure-button pure-button-primary">Upload</button>
+            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
 
-    <!-- Vue.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <!-- Axios CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Vue.js script -->
+    <!-- Scripts -->
+    <!-- Coded in JavaScript -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Script for checking if passwords match
             var password = document.getElementById("password");
             var confirmpassword = document.getElementById("confirmpassword");
 
@@ -69,67 +67,45 @@
             }
             password.onchange = validatePassword;
             confirmpassword.onkeyup = validatePassword;
-        });
-        
-      const MAX_IMAGE_SIZE = 1000000
-      const API_ENDPOINT = 'https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite'
 
-      new Vue({
-        el: "#app",
-        data: {
-          image: '',
-          uploadURL: ''
-        },
-        methods: {
-          onFileChange (e) {
-            let files = e.target.files || e.dataTransfer.files
-            if (!files.length) return
-            this.createImage(files[0])
-          },
-          createImage (file) {
-            let reader = new FileReader()
-            reader.onload = (e) => {
-              console.log('length: ', e.target.result.includes('data:image/jpeg'))
-              if (!e.target.result.includes('data:image/jpeg')) {
-                return alert('Wrong file type - JPG only.')
-              }
-              if (e.target.result.length > MAX_IMAGE_SIZE) {
-                return alert('Image is too large.')
-              }
-              this.image = e.target.result
-            }
-            reader.readAsDataURL(file)
-          },
-          removeImage: function (e) {
-            console.log('Remove clicked')
-            this.image = ''
-          },
-          uploadImage: async function (e) {
-            console.log('Upload clicked')
-            // Get the presigned URL
-            const response = await axios({
-              method: 'GET',
-              url: API_ENDPOINT
-            })
-            console.log('Response: ', response)
-            console.log('Uploading: ', this.image)
-            let binary = atob(this.image.split(',')[1])
-            let array = []
-            for (var i = 0; i < binary.length; i++) {
-              array.push(binary.charCodeAt(i))
-            }
-            let blobData = new Blob([new Uint8Array(array)], {type: 'image/jpeg'})
-            console.log('Uploading to: ', response.uploadURL)
-            const result = await fetch(response.uploadURL, {
-              method: 'PUT',
-              body: blobData
-            })
-            console.log('Result: ', result)
-            // Final URL for the user doesn't need the query string params
-            this.uploadURL = response.uploadURL.split('?')[0]
-          }
-        }
-      })
+            // Script for file input
+            // Add event listener to the select file button
+            document.getElementById("selectFileButton").addEventListener("click", function() {
+                document.getElementById("fileInput").click();
+            });
+
+            // Add event listener to the file input
+            document.getElementById("fileInput").addEventListener("change", function(event) {
+                // Access the selected file
+                const file = event.target.files[0];
+
+                // Get form data
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('firstname', document.getElementById('firstname').value);
+                formData.append('lastname', document.getElementById('lastname').value);
+                formData.append('phonenumber', document.getElementById('phonenumber').value);
+                formData.append('password', document.getElementById('password').value);
+                formData.append('confirmpassword', document.getElementById('confirmpassword').value);
+
+                // Send form data to Lambda function
+                fetch('https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response:', data);
+                    if (data.presigned_url) {
+                        // Redirect to the presigned URL for file upload
+                        window.location.href = data.presigned_url;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
     </script>
 </body>
 </html>
