@@ -29,8 +29,8 @@
 <body>
     <h1 style="text-align:center">Profile Registration</h1>
     <h2 style="text-align:center">North Carolina State University</h2>
-<!--Code for the user input-->
-<!--Action ID needs to match your Invoke URL of your API Gateway-->
+    <!-- Code for the user input -->
+    <!-- Action ID needs to match your Invoke URL of your API Gateway -->
     <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite" enctype="multipart/form-data">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
@@ -44,26 +44,40 @@
             <input type="password" id="password" name="password" required><br><br>
             <label for="confirmpassword">Confirm Password:</label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
+            <!-- File upload button -->
+            <input type="file" id="fileInput" style="display: none;">
+            <button type="button" id="selectFileButton">Select file...</button><br><br>
             <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
 
-    <!--Scripts-->
-    <!--Coded in javascript-->
+    <!-- Scripts -->
+    <!-- Coded in JavaScript -->
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var password = document.getElementById("password");
-        var confirmpassword = document.getElementById("confirmpassword");
+        document.addEventListener("DOMContentLoaded", function() {
+            var password = document.getElementById("password");
+            var confirmpassword = document.getElementById("confirmpassword");
 
-        function validatePassword() {
-            if (password.value != confirmpassword.value) {
+            function validatePassword() {
+                if (password.value != confirmpassword.value) {
                     confirmpassword.setCustomValidity("Passwords Don't Match");
                 } else {
                     confirmpassword.setCustomValidity('');
                 }
             }
+
             password.onchange = validatePassword;
             confirmpassword.onkeyup = validatePassword;
+
+            // Add event listener to the select file button
+            document.getElementById("selectFileButton").addEventListener("click", function() {
+                document.getElementById("fileInput").click();
+            });
+
+            // Add event listener to the file input
+            document.getElementById("fileInput").addEventListener("change", function(event) {
+                // You can perform additional actions here when a file is selected, if needed
+            });
         });
     </script>
 </body>
