@@ -11,7 +11,7 @@ var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 var values = [
   formData.firstname,
   formData.lastname,
-  formData.email,
+  formData.phonenumber,
   formData.password,
 ];
 sheet.appendRow(values);
