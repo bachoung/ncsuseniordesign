@@ -54,6 +54,7 @@
     <!-- Scripts -->
     <!-- Coded in JavaScript -->
     <script>
+    // Script for checking if passwords match
       document.addEventListener("DOMContentLoaded", function() {
             var password = document.getElementById("password");
             var confirmpassword = document.getElementById("confirmpassword");
@@ -65,10 +66,10 @@
                     confirmpassword.setCustomValidity('');
                 }
             }
-
             password.onchange = validatePassword;
             confirmpassword.onkeyup = validatePassword;
 
+           // Script for file input
             // Add event listener to the select file button
             document.getElementById("selectFileButton").addEventListener("click", function() {
                 document.getElementById("fileInput").click();
