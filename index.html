@@ -76,7 +76,41 @@
 
             // Add event listener to the file input
             document.getElementById("fileInput").addEventListener("change", function(event) {
-                // You can perform additional actions here when a file is selected, if needed
+                // Access the selected file
+                const file = event.target.files[0];
+
+                // Create FormData object
+                const formData = new FormData();
+                formData.append("file", file);
+
+                // Construct HTTP request
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite", true);
+
+                // Send FormData object as the request body
+                xhr.send(formData);
+
+                // Optional: Handle upload progress
+                xhr.upload.onprogress = function(event) {
+                    const percentComplete = (event.loaded / event.total) * 100;
+                    console.log("Upload Progress:", percentComplete.toFixed(2) + "%");
+                };
+
+                // Handle upload completion
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        console.log("File uploaded successfully!");
+                        // Optionally, handle response from the server
+                        console.log("Server Response:", xhr.responseText);
+                    } else {
+                        console.error("Upload failed. Server returned status:", xhr.status);
+                    }
+                };
+
+                // Handle errors
+                xhr.onerror = function() {
+                    console.error("Upload failed. Network error occurred.");
+                };
             });
         });
     </script>
