@@ -72,11 +72,12 @@
     <script>
         document.getElementById("submitBtn").addEventListener("click", function () {
             var url = "https://iwdzh2aend.execute-api.us-east-2.amazonaws.com/DEV/security-fileupload/7043611056/pavan";
+            var file = getElementById("file");
 
             fetch(url, {
                 method: "PUT",
                 'Content-type': 'application/json'
-                body: getElementById("file")
+                body: file
             }).then(response => {
                 if (response.ok) {
                     console.log("File uploaded successfully");
