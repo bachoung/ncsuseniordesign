@@ -32,7 +32,7 @@
     <h2 style="text-align:center">North Carolina State University</h2>
     <!--Code for the user input-->
     <!--Action ID needs to match your Invoke URL of your API Gateway-->
-    <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite"
+    <form id="myForm"
         enctype="multipart/form-data">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
@@ -73,7 +73,8 @@
     <script>
         document.getElementById("file").addEventListener("click", function () {
             var formData = new FormData(document.getElementById("myForm"));
-            var url = "https://iwdzh2aend.execute-api.us-east-2.amazonaws.com/DEV/security-fileupload/7043611056/pavan.jpg";
+            var phonenumber = "phonenumber";
+            var url = "https://iwdzh2aend.execute-api.us-east-2.amazonaws.com/DEV/security-fileupload/7043611056/pavan";
 
             fetch(url, {
                 method: "PUT",
