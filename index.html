@@ -49,6 +49,9 @@
             <label for="file">Upload Headshot Image:</label><br>
             <input type="file" id="file" name="file" required><br><br>
             <button type="submit" class="pure-button pure-button-primary">Confirm</button>
+            <label for="file">Upload Headshot Image:</label><br>
+            <input type="file" id="file" name="file" required><br><br>
+            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
     <!--Script to check if password matches confirm password-->
@@ -71,9 +74,9 @@
     </script>
 
     <script>
-        document.getElementById("submitBtn").addEventListener("click", function () {
+        document.getElementById("file").addEventListener("click", function () {
             var formData = new FormData(document.getElementById("myForm"));
-            var url = "https://iwdzh2aend.execute-api.us-east-2.amazonaws.com/DEV/security-fileupload/7043611056/pavan";
+            var url = "https://iwdzh2aend.execute-api.us-east-2.amazonaws.com/DEV/security-fileupload/{folder}/{filename}";
 
             fetch(url, {
                 method: "PUT",
