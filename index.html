@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Profile Registration</title>
     <style>
@@ -10,7 +11,7 @@
         fieldset {
             background-color: #e6e6e6;
             width: 300px;
-            height: 425px;
+            height: 500px;
             margin: auto;
         }
 
@@ -25,11 +26,14 @@
         }
     </style>
 </head>
+
 <body>
     <h1 style="text-align:center">Profile Registration</h1>
     <h2 style="text-align:center">North Carolina State University</h2>
-
-    <form id="myForm" action="https://script.google.com/macros/s/AKfycbxdTFwRoP5_d977J68-PubTKtEeD7vu0CzRcRTBTtF0knUY3FDVG4cbutPKWVP_PxxR/exec">
+    <!--Code for the user input-->
+    <!--Action ID needs to match your Invoke URL of your API Gateway-->
+    <form id="myForm" action="https://hvpi7zhzxd.execute-api.us-east-2.amazonaws.com/regwebsite"
+        enctype="multipart/form-data">
         <fieldset style="text-align:center;">
             <legend>Create a Profile</legend><br>
             <label for="firstname">First Name:</label><br>
@@ -42,45 +46,55 @@
             <input type="password" id="password" name="password" required><br><br>
             <label for="confirmpassword">Confirm Password:</label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" required><br><br>
+            <label for="file">Upload Headshot Image:</label><br>
+            <input type="file" id="file" name="file" required><br><br>
+            <button type="submit" class="pure-button pure-button-primary">Confirm</button>
+            <label for="file">Upload Headshot Image:</label><br>
+            <input type="file" id="file" name="file" required><br><br>
             <button type="submit" class="pure-button pure-button-primary">Confirm</button>
         </fieldset>
     </form>
+    <!--Script to check if password matches confirm password-->
+    <!--Coded in javascript-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var password = document.getElementById("password");
+            var confirmpassword = document.getElementById("confirmpassword");
+
+            function validatePassword() {
+                if (password.value != confirmpassword.value) {
+                    confirmpassword.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirmpassword.setCustomValidity('');
+                }
+            }
+            password.onchange = validatePassword;
+            confirmpassword.onkeyup = validatePassword;
+        });
+    </script>
 
     <script>
-        var password = document.getElementById("password"),
-            confirmpassword = document.getElementById("confirmpassword");
+        document.getElementById("submitBtn").addEventListener("click", function () {
+            var formData = new FormData(document.getElementById("myForm"));
+            var url = "https://iwdzh2aend.execute-api.us-east-2.amazonaws.com/DEV/security-fileupload/{folder}/{filename}";
 
-        function validatePassword(){
-            if(password.value != confirmpassword.value){
-                confirmpassword.setCustomValidity("Passwords Don't Match");
-            } else {
-                confirmpassword.setCustomValidity('');
-            }
-        }
-
-        password.onchange = validatePassword;
-        confirmpassword.onkeyup = validatePassword;
-
-        var form = document.getElementById("myForm");
-        var button = form.querySelector("button");
-
-        button.addEventListener("click", function (e) {
-            e.preventDefault();
-            var firstname = document.getElementById("firstname").value;
-            var lastname = document.getElementById("lastname").value;
-            var phonenumber = document.getElementById("phonenumber").value;
-            var password = document.getElementById("password").value;
-
-            google.script.run.processForm({
-                firstname: firstname,
-                lastname: lastname,
-                phonenumber: phonenumber,
-                password: password,
+            fetch(url, {
+                method: "PUT",
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    console.log("File uploaded successfully");
+                    // You can add code here to handle success, like showing a message to the user
+                } else {
+                    console.error("Error uploading file");
+                    // You can add code here to handle errors, like showing an error message to the user
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+                // You can add code here to handle network errors
             });
-
-            alert("Registration submitted successfully!");
-            form.reset();
         });
     </script>
 </body>
+
 </html>
